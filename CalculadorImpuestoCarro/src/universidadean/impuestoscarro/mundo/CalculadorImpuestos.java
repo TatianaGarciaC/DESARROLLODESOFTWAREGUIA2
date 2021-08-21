@@ -1,11 +1,11 @@
 /**
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * Universidad Ean (Bogotá - Colombia)
- * Programa de Ingeniería de Sistemas
+ * Universidad Ean (BogotÃ¡ - Colombia)
+ * Programa de IngenierÃ­a de Sistemas
  * Licenciado bajo el esquema Academic Free License version 2.1
  * <p>
  * Bloque de Estudios: Desarrollo de Software
- * Ejercicio: Cálculo de Impuestos de Carros
+ * Ejercicio: CÃ¡lculo de Impuestos de Carros
  * Adaptado de: Proyecto CUPI2 - UNIANDES
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
@@ -29,7 +29,7 @@ public class CalculadorImpuestos {
     public static final double PORC_DESC_PRONTO_PAGO = 10.0;
 
     /**
-     * Valor de descuento por servicio público.
+     * Valor de descuento por servicio pÃºblico.
      */
     public static final double VALOR_DESC_SERVICIO_PUBLICO = 50000.0;
 
@@ -37,18 +37,19 @@ public class CalculadorImpuestos {
      * Porcentaje de descuento por traslado de cuenta.
      */
     public static final double PORC_DESC_TRASLADO_CUENTA = 5.0;
+    
 
     // -----------------------------------------------------------------
     // Atributos
     // -----------------------------------------------------------------
 
     /**
-     * Vehículos que maneja el calculador.
+     * VehÃ­culos que maneja el calculador.
      */
     private Vehiculo[] vehiculos;
 
     /**
-     * Vehículo actual mostrado en la aplicación.
+     * VehÃ­culo actual mostrado en la aplicaciÃ³n.
      */
     private int posVehiculoActual;
 
@@ -62,8 +63,8 @@ public class CalculadorImpuestos {
     // -----------------------------------------------------------------
 
     /**
-     * Crea un calculador de impuestos, cargando la información de dos archivos. <br>
-     * <b>post: </b> Se inicializaron los arreglos de vehículos y rangos.<br>
+     * Crea un calculador de impuestos, cargando la informaciÃ³n de dos archivos. <br>
+     * <b>post: </b> Se inicializaron los arreglos de vehÃ­culos y rangos.<br>
      * Se cargaron los datos correctamente a partir de los archivos.
      *
      * @throws Exception Error al cargar los archivos.
@@ -74,15 +75,15 @@ public class CalculadorImpuestos {
     }
 
     // ----------------------------------------------------------------
-    // Métodos
+    // MÃ©todos
     // ----------------------------------------------------------------
 
     /**
-     * Carga los datos de los vehículos que maneja el calculador de impuestos. <br>
-     * <b>post: </b> Se cargan todos los vehículos del archivo con sus datos.
+     * Carga los datos de los vehÃ­culos que maneja el calculador de impuestos. <br>
+     * <b>post: </b> Se cargan todos los vehÃ­culos del archivo con sus datos.
      *
-     * @param pArchivo Nombre del archivo donde se encuentran los datos de los vehículos. pArchivo != null.
-     * @throws Exception Si ocurre algún error cargando los datos.
+     * @param pArchivo Nombre del archivo donde se encuentran los datos de los vehÃ­culos. pArchivo != null.
+     * @throws Exception Si ocurre algÃºn error cargando los datos.
      */
     private void cargarVehiculos(String pArchivo) throws Exception {
         String texto, valores[], sMarca, sLinea, sModelo, sImagen;
@@ -111,13 +112,13 @@ public class CalculadorImpuestos {
 
                 vehiculo = new Vehiculo(sMarca, sLinea, sModelo, precio, sImagen);
                 vehiculos[i] = vehiculo;
-                // Siguiente línea
+                // Siguiente lÃ­nea
                 texto = lector.readLine();
             }
             lector.close();
         }
         catch (IOException e) {
-            throw new Exception("Error al cargar los datos almacenados de vehículos.");
+            throw new Exception("Error al cargar los datos almacenados de vehÃ­culos.");
         }
         catch (NumberFormatException e) {
             throw new Exception("El archivo no tiene el formato esperado.");
@@ -126,9 +127,9 @@ public class CalculadorImpuestos {
 
     /**
      * Carga la tabla de impuestos por los rangos. <br>
-     * <b>post: </b> Se cargan todos valores de impuestos según los rangos de valores.
+     * <b>post: </b> Se cargan todos valores de impuestos segÃºn los rangos de valores.
      *
-     * @param pArchivo Ubicación del archivo a leer. pArchivo != null.
+     * @param pArchivo UbicaciÃ³n del archivo a leer. pArchivo != null.
      * @throws Exception Si ocurre un error al cargar los rangos.
      */
     private void cargarTablaImpuestos(String pArchivo) throws Exception {
@@ -152,7 +153,7 @@ public class CalculadorImpuestos {
                     porcentaje = Double.parseDouble(valores[2]);
                 }
                 catch (Exception e) {
-                    throw new Exception("Error en la definición de rango" + i);
+                    throw new Exception("Error en la definiciÃ³n de rango" + i);
                 }
 
                 rango = new RangoImpuesto(inicio, fin, porcentaje);
@@ -178,161 +179,191 @@ public class CalculadorImpuestos {
      * @return Rango de impuesto que contiene al valor o null si no lo encuentra.
      */
     private RangoImpuesto buscarRangoImpuesto(double valor) {
-        RangoImpuesto rango = null;
+    	RangoImpuesto rangoImp= null;
+    	
+    	if(valor > 0) {
 
-        // TODO: Buscar el rangoImpuesto. Use el método contieneA(valor)
+    		for(RangoImpuesto rango: rangosImpuesto) {
+                if(rango.contieneA(valor)){
+                	rangoImp=rango;
+                }
 
-        return rango;
+    		}
+    		
+            return rangoImp;
+    	} else {
+    		return rangoImp;
+    	}
     }
 
     /**
-     * Calcula el pago de impuesto que debe hacer el vehículo actual. <br>
-     * <b>pre:</b> Las listas de rangos y vehículos están inicializadas.
+     * Calcula el pago de impuesto que debe hacer el vehÃ­culo actual. <br>
+     * <b>pre:</b> Las listas de rangos y vehÃ­culos estÃ¡n inicializadas.
      *
      * @param descProntoPago      Indica si aplica el descuento por pronto pago.
-     * @param descServicioPublico Indica si aplica el descuento por servicio público.
+     * @param descServicioPublico Indica si aplica el descuento por servicio pÃºblico.
      * @param descTrasladoCuenta  Indica si aplica el descuento por traslado de cuenta.
-     * @return Valor a pagar de acuerdo con las características del vehículo y los descuentos que se pueden aplicar.
+     * @return Valor a pagar de acuerdo con las caracterÃ­sticas del vehÃ­culo y los descuentos que se pueden aplicar.
      */
     public double calcularPago(boolean descProntoPago, boolean descServicioPublico, boolean descTrasladoCuenta) {
         double pago = 0.0;
         double precio = darVehiculoActual().darPrecio();
-        // Calcula el impuesto según el precio del vehículo
-        RangoImpuesto rango = buscarRangoImpuesto(precio);
 
-        // TODO: Encontrar el valor del pago de impuesto de acuerdo a los datos de entrada
+        RangoImpuesto rango = buscarRangoImpuesto(precio);
+        
+        pago = precio - calcularPorcentaje(rango.darPorcentaje(), precio);
+        
+        
+        if(descProntoPago) {
+        	pago = pago - calcularPorcentaje(PORC_DESC_PRONTO_PAGO, pago);
+        } 
+        
+        if(descServicioPublico) {
+        	pago = pago - VALOR_DESC_SERVICIO_PUBLICO;
+
+        }
+        
+        if(descTrasladoCuenta) {
+        	pago = pago - calcularPorcentaje(PORC_DESC_TRASLADO_CUENTA, pago);
+
+        }
 
         return pago;
     }
+    
+    public Double calcularPorcentaje(double porcent, double cant){
+        double resultado = (porcent / 100) * cant;
+        return resultado;
+    }
 
     /**
-     * Retorna el primer vehículo. <br>
-     * <b>post: </b> Se actualizó la posición del vehículo actual.
+     * Retorna el primer vehÃ­culo. <br>
+     * <b>post: </b> Se actualizÃ³ la posiciÃ³n del vehÃ­culo actual.
      *
-     * @return El primer vehículo, que ahora es el vehículo actual.
-     * @throws Exception Si ya se encuentra en el primer vehículo.
+     * @return El primer vehÃ­culo, que ahora es el vehÃ­culo actual.
+     * @throws Exception Si ya se encuentra en el primer vehÃ­culo.
      */
     public Vehiculo darPrimero() throws Exception {
         if (posVehiculoActual == 0) {
-            throw new Exception("Ya se encuentra en el primer vehículo.");
+            throw new Exception("Ya se encuentra en el primer vehÃ­culo.");
         }
         posVehiculoActual = 0;
         return darVehiculoActual();
     }
 
     /**
-     * Retorna el vehículo anterior al actual. <br>
-     * <b>post: </b> Se actualizó la posición del vehículo actual.
+     * Retorna el vehÃ­culo anterior al actual. <br>
+     * <b>post: </b> Se actualizÃ³ la posiciÃ³n del vehÃ­culo actual.
      *
-     * @return El anterior vehículo, que ahora es el vehículo actual.
-     * @throws Exception Si ya se encuentra en el primer vehículo.
+     * @return El anterior vehÃ­culo, que ahora es el vehÃ­culo actual.
+     * @throws Exception Si ya se encuentra en el primer vehÃ­culo.
      */
     public Vehiculo darAnterior() throws Exception {
         if (posVehiculoActual == 0) {
-            throw new Exception("Se encuentra en el primer vehículo.");
+            throw new Exception("Se encuentra en el primer vehÃ­culo.");
         }
         posVehiculoActual--;
         return darVehiculoActual();
     }
 
     /**
-     * Retorna el vehículo siguiente al actual. <br>
-     * <b>post: </b> Se actualizó la posición del vehículo actual.
+     * Retorna el vehÃ­culo siguiente al actual. <br>
+     * <b>post: </b> Se actualizÃ³ la posiciÃ³n del vehÃ­culo actual.
      *
-     * @return El siguiente vehículo, que ahora es el vehículo actual.
-     * @throws Exception Si ya se encuentra en el último vehículo
+     * @return El siguiente vehÃ­culo, que ahora es el vehÃ­culo actual.
+     * @throws Exception Si ya se encuentra en el Ãºltimo vehÃ­culo
      */
     public Vehiculo darSiguiente() throws Exception {
         if (posVehiculoActual == vehiculos.length - 1) {
-            throw new Exception("Se encuentra en el último vehículo.");
+            throw new Exception("Se encuentra en el Ãºltimo vehÃ­culo.");
         }
         posVehiculoActual++;
         return darVehiculoActual();
     }
 
     /**
-     * Retorna el último vehículo. <br>
-     * <b>post: </b> Se actualizó la posición del vehículo actual.
+     * Retorna el Ãºltimo vehÃ­culo. <br>
+     * <b>post: </b> Se actualizÃ³ la posiciÃ³n del vehÃ­culo actual.
      *
-     * @return El último vehículo, que ahora es el vehículo actual.
-     * @throws Exception Si ya se encuentra en el último vehículo
+     * @return El Ãºltimo vehÃ­culo, que ahora es el vehÃ­culo actual.
+     * @throws Exception Si ya se encuentra en el Ãºltimo vehÃ­culo
      */
     public Vehiculo darUltimo() throws Exception {
         if (posVehiculoActual == vehiculos.length - 1) {
-            throw new Exception("Ya se encuentra en el último vehículo.");
+            throw new Exception("Ya se encuentra en el Ãºltimo vehÃ­culo.");
         }
         posVehiculoActual = vehiculos.length - 1;
         return darVehiculoActual();
     }
 
     /**
-     * Retorna el vehículo actual.
+     * Retorna el vehÃ­culo actual.
      *
-     * @return El vehículo actual.
+     * @return El vehÃ­culo actual.
      */
     public Vehiculo darVehiculoActual() {
         return vehiculos[posVehiculoActual];
     }
 
     /**
-     * Busca el vehículo más caro, lo asigna como actual y lo retorna.
+     * Busca el vehÃ­culo mÃ¡s caro, lo asigna como actual y lo retorna.
      *
-     * @return El vehículo más caro.
+     * @return El vehÃ­culo mÃ¡s caro.
      */
     public Vehiculo buscarVehiculoMasCaro() {
         Vehiculo masCaro = null;
 
-        // TODO: Buscar el vehículo más caro del arreglo de vehículos
+        // TODO: Buscar el vehÃ­culo mÃ¡s caro del arreglo de vehÃ­culos
 
         return masCaro;
 
     }
 
     /**
-     * Busca y retorna el primer vehículo que encuentra con la marca que llega por parámetro. <br>
-     * <b>post: </b> Se asigna como vehículo actual al vehículo encontrado.
+     * Busca y retorna el primer vehÃ­culo que encuentra con la marca que llega por parÃ¡metro. <br>
+     * <b>post: </b> Se asigna como vehÃ­culo actual al vehÃ­culo encontrado.
      *
      * @param marca Marca buscada.
-     * @return El primer vehículo de la marca. Si no encuentra ninguno retorna null.
+     * @return El primer vehÃ­culo de la marca. Si no encuentra ninguno retorna null.
      */
     public Vehiculo buscarVehiculoPorMarca(String marca) {
         Vehiculo buscado = null;
 
-        // TODO: Retornar el primer vehículo que tiene la marca dada
+        // TODO: Retornar el primer vehÃ­culo que tiene la marca dada
 
         return buscado;
     }
 
     /**
-     * Busca y retorna el vehículo de la línea buscada. <br>
-     * <b>post: </b> Se asigna como vehículo actual al vehículo encontrado.
+     * Busca y retorna el vehÃ­culo de la lÃ­nea buscada. <br>
+     * <b>post: </b> Se asigna como vehÃ­culo actual al vehÃ­culo encontrado.
      *
-     * @param linea Línea buscada. pLinea != null && pLinea != ""
-     * @return El vehículo de la línea, null si no encuentra ninguno.
+     * @param linea LÃ­nea buscada. pLinea != null && pLinea != ""
+     * @return El vehÃ­culo de la lÃ­nea, null si no encuentra ninguno.
      */
     public Vehiculo buscarVehiculoPorLinea(String linea) {
         Vehiculo buscado = null;
 
-        // TODO: Buscar el primer vehículo que tiene la línea dada
+        // TODO: Buscar el primer vehÃ­culo que tiene la lÃ­nea dada
 
         return buscado;
     }
 
     /**
-     * Busca el vehículo más antiguo, lo asigna como actual y lo retorna.
+     * Busca el vehÃ­culo mÃ¡s antiguo, lo asigna como actual y lo retorna.
      *
-     * @return El vehículo más antiguo.
+     * @return El vehÃ­culo mÃ¡s antiguo.
      */
     public Vehiculo buscarVehiculoMasAntiguo() {
         Vehiculo buscado = null;
 
-        // TODO: Buscar el vehículo más antiguo del sistema
+        // TODO: Buscar el vehÃ­culo mÃ¡s antiguo del sistema
 
         return buscado;
     }
 
     /**
-     * Calcula el promedio de los precios de todos los automóviles que están en el sistema
+     * Calcula el promedio de los precios de todos los automÃ³viles que estÃ¡n en el sistema
      *
      * @return Promedio de precios
      */
