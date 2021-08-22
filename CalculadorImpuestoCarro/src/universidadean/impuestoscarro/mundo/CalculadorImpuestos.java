@@ -313,7 +313,14 @@ public class CalculadorImpuestos {
     public Vehiculo buscarVehiculoMasCaro() {
         Vehiculo masCaro = null;
 
-        // TODO: Buscar el vehÃ­culo mÃ¡s caro del arreglo de vehÃ­culos
+        double precioVehiculo = 0.0;
+
+        for(Vehiculo v : vehiculos){
+            if (v.darPrecio() > precioVehiculo) {
+                masCaro = v;
+                precioVehiculo = v.darPrecio();
+            }
+        }
 
         return masCaro;
 
@@ -329,8 +336,11 @@ public class CalculadorImpuestos {
     public Vehiculo buscarVehiculoPorMarca(String marca) {
         Vehiculo buscado = null;
 
-        // TODO: Retornar el primer vehÃ­culo que tiene la marca dada
-
+        for(Vehiculo v : vehiculos){
+            if (v.darMarca().equalsIgnoreCase(marca)) {
+                buscado = v;
+            }
+        }
         return buscado;
     }
 
@@ -344,8 +354,13 @@ public class CalculadorImpuestos {
     public Vehiculo buscarVehiculoPorLinea(String linea) {
         Vehiculo buscado = null;
 
-        // TODO: Buscar el primer vehÃ­culo que tiene la lÃ­nea dada
+        Vehiculo buscado = null;
 
+        for(Vehiculo v : vehiculos){
+            if (v.darLinea().equalsIgnoreCase(linea)) {
+                buscado = v;
+            }
+        }
         return buscado;
     }
 
@@ -356,9 +371,16 @@ public class CalculadorImpuestos {
      */
     public Vehiculo buscarVehiculoMasAntiguo() {
         Vehiculo buscado = null;
+        Integer anioMaximo = 9999;
 
-        // TODO: Buscar el vehÃ­culo mÃ¡s antiguo del sistema
-
+        for(Vehiculo v : vehiculos){
+            Integer anio = Integer.parseInt(v.darAnio());
+            DriverManager.println(anio.toString());
+            if (anio < anioMaximo){
+                anioMaximo = anio;
+                buscado = v;
+            }
+        }
         return buscado;
     }
 
@@ -369,7 +391,9 @@ public class CalculadorImpuestos {
      */
     public double promedioPreciosVehiculos() {
         double promedio = 0.0;
-
+        for (Vehiculo v : vehiculos){
+            promedio = promedio + v.darPrecio()/vehiculos.length;
+        }
         return promedio;
     }
 
