@@ -352,7 +352,6 @@ public class CalculadorImpuestos {
      * @return El vehÃ­culo de la lÃ­nea, null si no encuentra ninguno.
      */
     public Vehiculo buscarVehiculoPorLinea(String linea) {
-        Vehiculo buscado = null;
 
         Vehiculo buscado = null;
 
