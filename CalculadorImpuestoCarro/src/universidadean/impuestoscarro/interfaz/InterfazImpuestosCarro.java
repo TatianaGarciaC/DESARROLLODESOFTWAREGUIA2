@@ -257,7 +257,9 @@ public class InterfazImpuestosCarro extends JFrame {
      */
     public void reqFuncOpcion2() {
         double respuesta = calculador.promedioPreciosVehiculos();
-        JOptionPane.showMessageDialog(this, respuesta, "Respuesta", JOptionPane.INFORMATION_MESSAGE);
+        DecimalFormat df = (DecimalFormat) NumberFormat.getInstance();
+        df.applyPattern("$ ###,###.##");
+        JOptionPane.showMessageDialog(this, df.format(respuesta), "Respuesta",JOptionPane.INFORMATION_MESSAGE);
     }
 
     // -----------------------------------------------------------------
