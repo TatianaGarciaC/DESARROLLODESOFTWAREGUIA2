@@ -374,7 +374,6 @@ public class CalculadorImpuestos {
 
         for(Vehiculo v : vehiculos){
             Integer anio = Integer.parseInt(v.darAnio());
-            DriverManager.println(anio.toString());
             if (anio < anioMaximo){
                 anioMaximo = anio;
                 buscado = v;
